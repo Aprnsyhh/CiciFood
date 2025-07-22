@@ -673,7 +673,7 @@
         </div>
         
         <div class="menu-grid" id="menuItems">
-            </div>
+        </div>
     </section>
 
     <section class="about" id="about">
@@ -696,7 +696,7 @@
             <button class="close-cart" id="closeCart">&times;</button>
         </div>
         <div class="cart-items" id="cartItems">
-            </div>
+        </div>
         <div class="cart-total">
             <span>Total:</span>
             <span id="cartTotal">Rp 0</span>
@@ -980,7 +980,7 @@
             
             updateCartDisplay();
             quantityInput.value = 1; // Reset quantity input after adding to cart
-            toggleCart(true); // Open cart sidebar when item is added
+            // toggleCart(true); // *** COMMENTED OUT: Do not open cart sidebar when item is added ***
         }
 
         /**
@@ -1001,37 +1001,33 @@
          */
         function decreaseQuantity(id) {
             const itemInCart = cart.find(item => item.id === id);
-            if (itemInCart) {
-                if (itemInCart.quantity > 1) {
-                    itemInCart.quantity--;
-                } else {
-                    // Remove item if quantity becomes 0 or less
-                    cart = cart.filter(item => item.id !== id);
-                }
+            if (itemInCart && itemInCart.quantity > 1) {
+                itemInCart.quantity--;
                 updateCartDisplay();
+            } else if (itemInCart && itemInCart.quantity === 1) {
+                removeFromCart(id);
             }
         }
 
         /**
-         * Removes an item from the cart completely.
-         * @param {Event} e - The click event object.
+         * Removes an item from the cart.
+         * @param {number} id - The ID of the item to remove.
          */
-        function removeFromCart(e) {
-            const id = parseInt(e.currentTarget.dataset.id);
+        function removeFromCart(id) {
             cart = cart.filter(item => item.id !== id);
             updateCartDisplay();
         }
 
         /**
-         * Updates the cart display in the sidebar.
+         * Updates the display of cart items and total.
          */
         function updateCartDisplay() {
             cartItemsContainer.innerHTML = ''; // Clear existing cart items
-            
+            let total = 0;
+            let itemCount = 0;
+
             if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p style="text-align: center; color: #777;">Your cart is empty</p>';
-                orderForm.style.display = 'none'; // Hide form if cart is empty
-                checkoutBtn.style.display = 'block'; // Show checkout button
+                cartItemsContainer.innerHTML = '<p style="text-align: center; color: #888;">Keranjang Anda kosong.</p>';
             } else {
                 cart.forEach(item => {
                     const cartItemElement = document.createElement('div');
@@ -1041,91 +1037,56 @@
                         <div class="cart-item-details">
                             <div class="cart-item-title">${item.title}</div>
                             <div class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                            <div class="cart-item-quantity-controls">
+                                <button class="cart-quantity-btn minus" data-id="${item.id}">-</button>
+                                <span class="cart-quantity-display">${item.quantity}</span>
+                                <button class="cart-quantity-btn plus" data-id="${item.id}">+</button>
+                            </div>
                         </div>
-                        <div class="cart-item-quantity-controls">
-                            <button class="cart-quantity-btn minus" data-id="${item.id}">-</button>
-                            <span class="cart-quantity-display">${item.quantity}</span>
-                            <button class="cart-quantity-btn plus" data-id="${item.id}">+</button>
-                            <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
-                        </div>
+                        <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
                     `;
                     cartItemsContainer.appendChild(cartItemElement);
-                });
 
-                // Add event listeners for quantity changes in cart
-                document.querySelectorAll('.cart-item-quantity-controls .minus').forEach(btn => {
-                    btn.addEventListener('click', (e) => decreaseQuantity(parseInt(e.target.dataset.id)));
-                });
-                document.querySelectorAll('.cart-item-quantity-controls .plus').forEach(btn => {
-                    btn.addEventListener('click', (e) => increaseQuantity(parseInt(e.target.dataset.id)));
-                });
-                // Add event listeners to remove buttons for items in cart
-                document.querySelectorAll('.remove-item').forEach(btn => {
-                    btn.addEventListener('click', removeFromCart);
+                    total += item.price * item.quantity;
+                    itemCount += item.quantity;
                 });
             }
-            
-            // Update cart count and total price
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            cartCount.textContent = totalItems;
-            cartTotal.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+
+            cartTotal.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+            cartCount.textContent = itemCount;
+
+            // Add event listeners for cart item quantity controls and remove buttons
+            document.querySelectorAll('.cart-item-quantity-controls .plus').forEach(btn => {
+                btn.addEventListener('click', (e) => increaseQuantity(parseInt(e.target.dataset.id)));
+            });
+            document.querySelectorAll('.cart-item-quantity-controls .minus').forEach(btn => {
+                btn.addEventListener('click', (e) => decreaseQuantity(parseInt(e.target.dataset.id)));
+            });
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', (e) => removeFromCart(parseInt(e.target.closest('button').dataset.id)));
+            });
         }
 
         /**
          * Toggles the visibility of the cart sidebar and overlay.
-         * @param {boolean} [forceOpen] - If true, forces the cart to open.
+         * @param {boolean} show - True to show, false to hide.
          */
-        function toggleCart(forceOpen = false) {
-            if (forceOpen) {
-                cartOverlay.classList.add('active');
+        function toggleCart(show) {
+            if (show) {
                 cartSidebar.classList.add('active');
+                cartOverlay.classList.add('active');
             } else {
-                cartOverlay.classList.toggle('active');
-                cartSidebar.classList.toggle('active');
-                // Hide order form when cart is closed
-                if (!cartSidebar.classList.contains('active')) {
-                    orderForm.style.display = 'none';
-                    checkoutBtn.style.display = 'block';
-                }
+                cartSidebar.classList.remove('active');
+                cartOverlay.classList.remove('active');
+                orderForm.style.display = 'none'; // Hide form if cart is closed
             }
         }
 
-        // --- Event Listeners ---
-
-        // Load menu items on initial page load
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMenuItems();
-            updateCartDisplay(); // Initialize cart display
-        });
-
-        // Toggle cart sidebar
-        cartIcon.addEventListener('click', () => toggleCart(true));
-        closeCartBtn.addEventListener('click', () => toggleCart(false));
-        cartOverlay.addEventListener('click', () => toggleCart(false));
-
-        // Category filter buttons
-        categoryBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                categoryBtns.forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                loadMenuItems(e.target.dataset.category);
-            });
-        });
-
-        // Toggle order form visibility
-        checkoutBtn.addEventListener('click', () => {
-            if (cart.length > 0) {
-                orderForm.style.display = 'block';
-                checkoutBtn.style.display = 'none'; // Hide checkout button when form is shown
-            } else {
-                alert("Your cart is empty. Please add items before checking out.");
-            }
-        });
-
-        // Handle order confirmation and WhatsApp link
-        confirmOrderBtn.addEventListener('click', () => {
+        /**
+         * Generates the WhatsApp message URL.
+         * @returns {string} The WhatsApp API URL.
+         */
+        function generateWhatsAppMessage() {
             const customerName = document.getElementById('customerName').value;
             const customerPhone = document.getElementById('customerPhone').value;
             const customerAddress = document.getElementById('customerAddress').value;
@@ -1133,38 +1094,90 @@
             const deliveryTime = document.getElementById('deliveryTime').value;
             const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
+            let message = `Halo CiciFood, saya ingin memesan:\n\n`;
+
+            if (cart.length === 0) {
+                message += "Keranjang Anda kosong. Mohon tambahkan item terlebih dahulu.\n";
+            } else {
+                cart.forEach(item => {
+                    message += `- ${item.title} (${item.quantity}x) - Rp ${(item.price * item.quantity).toLocaleString('id-ID')}\n`;
+                });
+                message += `\nTotal: ${cartTotal.textContent}\n\n`;
+            }
+
+            message += `Detail Pengiriman:\n`;
+            message += `Nama: ${customerName}\n`;
+            message += `No. Telepon: ${customerPhone}\n`;
+            message += `Alamat: ${customerAddress}\n`;
+            message += `Tanggal Pengiriman: ${deliveryDate}\n`;
+            message += `Waktu Pengiriman: ${deliveryTime}\n`;
+            message += `Metode Pembayaran: ${paymentMethod}\n\n`;
+            message += `Terima kasih!`;
+
+            // Replace with your WhatsApp number
+            const whatsappNumber = '6285716071641'; // Ganti dengan nomor WhatsApp Anda
+
+            return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+        }
+
+
+        // --- Event Listeners ---
+
+        // Toggle cart sidebar visibility
+        cartIcon.addEventListener('click', () => toggleCart(true));
+        closeCartBtn.addEventListener('click', () => toggleCart(false));
+        cartOverlay.addEventListener('click', () => toggleCart(false));
+
+        // Checkout button click handler
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Keranjang Anda kosong. Tambahkan item untuk melanjutkan checkout.');
+                return;
+            }
+            orderForm.style.display = 'block'; // Show the order form
+        });
+
+        // Confirm order and send via WhatsApp
+        confirmOrderBtn.addEventListener('click', () => {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const deliveryTime = document.getElementById('deliveryTime').value;
+
             if (!customerName || !customerPhone || !customerAddress || !deliveryDate || !deliveryTime) {
-                alert("Please fill in all required fields.");
+                alert('Mohon lengkapi semua detail pengiriman.');
                 return;
             }
 
-            let orderDetails = `Halo CiciFood!\n\nSaya ingin memesan:\n\n`;
-            cart.forEach(item => {
-                orderDetails += `${item.quantity}x ${item.title} (Rp ${item.price.toLocaleString('id-ID')})\n`;
-            });
-            orderDetails += `\nTotal: Rp ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toLocaleString('id-ID')}\n\n`;
-            orderDetails += `Detail Pengiriman:\n`;
-            orderDetails += `Nama: ${customerName}\n`;
-            orderDetails += `No. Telepon: ${customerPhone}\n`;
-            orderDetails += `Alamat: ${customerAddress}\n`;
-            orderDetails += `Tanggal Pengiriman: ${deliveryDate}\n`;
-            orderDetails += `Waktu Pengiriman: ${deliveryTime}\n`;
-            orderDetails += `Metode Pembayaran: ${paymentMethod}\n\n`;
-            orderDetails += `Terima kasih!`;
+            const whatsappUrl = generateWhatsAppMessage();
+            window.open(whatsappUrl, '_blank'); // Open WhatsApp in a new tab
 
-            const whatsappNumber = "6281234567890"; // Ganti dengan nomor WhatsApp Anda
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderDetails)}`;
-            window.open(whatsappUrl, '_blank');
-
-            // Clear cart and form after sending order
+            // Optionally, clear the cart and hide the form after successful order
             cart = [];
             updateCartDisplay();
-            orderForm.reset();
-            orderForm.style.display = 'none';
-            checkoutBtn.style.display = 'block';
-            toggleCart(false); // Close cart sidebar
-            alert("Your order has been sent via WhatsApp!");
+            toggleCart(false);
+            alert('Pesanan Anda telah dikirim via WhatsApp! Terima kasih.');
         });
+
+        // Category filter buttons
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to the clicked button
+                btn.classList.add('active');
+                // Load menu items based on the data-category attribute
+                loadMenuItems(btn.dataset.category);
+            });
+        });
+
+        // Initial load of menu items
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenuItems();
+            updateCartDisplay();
+        });
+
     </script>
 </body>
 </html>
