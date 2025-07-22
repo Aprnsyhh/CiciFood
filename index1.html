@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CiciFood - Food & Beverage Ordering</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f36bff;
+            --secondary: #f36bff;
+            --dark: #292F36;
+            --light: #F7FFF7;
+            --accent: #FFE66D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d7d30a68-8b65-48ac-abad-7af557953ed8.png');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 4rem 0 2rem;
+            font-size: 2rem;
+            color: var(--dark);
+        }
+
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .category-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .menu-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-item-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .menu-item-content {
+            padding: 1.5rem;
+        }
+
+        .menu-item-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .menu-item-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .menu-item-desc {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            justify-content: center; /* Center the quantity controls */
+            gap: 0.5rem; /* Space between buttons and input */
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd; /* Add border for better visibility */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold; /* Make + and - bold */
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+        }
+
+        .quantity-input {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            margin: 0; /* Remove margin as gap handles spacing */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            -moz-appearance: textfield; /* Hide arrows on Firefox */
+        }
+
+        /* Hide arrows on Chrome, Safari, Edge */
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+        .add-to-cart {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 0.7rem;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #3dbeb6; /* Slightly different hover color */
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s;
+            z-index: 1000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            margin-bottom: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            margin-left: 1rem;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .cart-item-quantity-controls { /* New styling for cart item quantity controls */
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cart-quantity-btn { /* New styling for cart quantity buttons */
+            width: 25px;
+            height: 25px;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .cart-quantity-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .cart-quantity-display { /* Styling for the quantity number in cart */
+            font-weight: bold;
+            width: 25px;
+            text-align: center;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            margin-left: 1rem;
+            font-size: 1rem; /* Adjust icon size */
+        }
+        .remove-item:hover {
+            color: #cc0000;
+            transform: scale(1.1);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background-color: #e05555; /* Slightly different hover color */
+        }
+
+        .order-form {
+            display: none; /* Hidden by default */
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .order-form h4 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .payment-methods {
+            margin: 1.5rem 0;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .payment-method input {
+            margin-right: 0.8rem;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--primary);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* About Section Styles */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column layout for content */
+            gap: 2rem;
+            margin: 4rem 0;
+            align-items: center;
+        }
+
+        .about-content {
+            text-align: center;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo span {
+            color: var(--secondary);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+
+            .cart-sidebar.active {
+                right: 0;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .menu-item-img {
+                height: 150px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Cici<span>Food</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Cici Food Delivered</h1>
+            <p>Order your favorite meals from our Caffe and enjoy them in the comfort of your home</p>
+            <a href="#menu" class="btn">Order Now</a>
+        </div>
+    </section>
+
+    <section id="menu" class="container">
+        <h2 class="section-title">Our Menu</h2>
+        <div class="menu-categories">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="food">Food</button>
+            <button class="category-btn" data-category="beverage">Beverage</button>
+            <button class="category-btn" data-category="dessert">Dessert</button>
+        </div>
+        
+        <div class="menu-grid" id="menuItems">
+            </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">About CiciFood</h2>
+            <div class="about-grid">
+                <div class="about-content">
+                    <p1>Welcome to CiciFood! We are dedicated to providing you with the best culinary experience right to your doorstep. </p1>
+                    <p2>Our menu features a variety of authentic Indonesian dishes made with fresh, high-quality ingredients and traditional recipes.</p2>
+                    <p3>Whether you're looking for a quick, delicious meal or a feast for a special occasion, CiciFood has something delightful for everyone!</p3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            </div>
+        <div class="cart-total">
+            <span>Total:</span>
+            <span id="cartTotal">Rp 0</span>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+        <div class="order-form" id="orderForm">
+            <h4>Complete Your Order</h4>
+            <div class="form-group">
+                <label for="customerName">Full Name</label>
+                <input type="text" id="customerName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="customerPhone">Phone Number</label>
+                <input type="tel" id="customerPhone" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="customerAddress">Delivery Address</label>
+                <textarea id="customerAddress" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="deliveryDate">Delivery Date</label>
+                    <input type="date" id="deliveryDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryTime">Delivery Time</label>
+                    <input type="time" id="deliveryTime" class="form-control" required>
+                </div>
+            </div>
+            <div class="payment-methods">
+                <h5>Payment Method</h5>
+                <div class="payment-method">
+                    <input type="radio" id="cash" name="payment" value="Cash on Delivery" checked>
+                    <label for="cash">Cash on Delivery</label>
+                </div>
+                <div class="payment-method">
+                    <input type="radio" id="transfer" name="payment" value="Bank Transfer">
+                    <label for="transfer">Bank Transfer</label>
+                </div>
+            </div>
+            <button class="btn" id="confirmOrderBtn">Confirm & Send via WhatsApp</button>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-logo">Cici<span>Food</span></div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#menu">Menu</a>
+                <a href="#contact">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p class="copyright">© 2023 CiciFood. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample menu data
+        const menuItems = [
+            {
+                id: 1,
+                title: "Nasi Goreng Special",
+                category: "food",
+                price: 25000,
+                description: "Traditional Indonesian fried rice with chicken, shrimp, and special sauce",
+                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bb02ff48-d563-4194-bca9-a0866a365cc8.png"
+            },
+            {
+                id: 2,
+                title: "Chicken Satay",
+                category: "food",
+                price: 20000,
+                description: "Grilled chicken skewers with peanut sauce",
+                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e5cddc9d-1044-4575-92d0-79bf9c65a93d.png"
+            },
+            {
+                id: 3,
+                title: "Beef Rendang",
+                category: "food",
+                price: 35000,
+                description: "Slow-cooked beef in rich coconut and spice mixture",
+                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/977f6f07-e346-4520-a560-9db156bb282b.png"
+            },
+            {
+                id: 4,
+                title: "Mie Goreng",
+                category: "food",
+                price: 22000,
+                description: "Fried noodles with vegetables and your choice of protein",
+                image: "https://allofresh.id/blog/wp-content/uploads/2023/09/cara-membuat-mie-goreng-4-1-scaled.jpg"
+            },
+            {
+                id: 5,
+                title: "Soto Ayam",
+                category: "food",
+                price: 18000,
+                description: "Traditional Indonesian chicken soup with herbs and spices",
+                image: "https://static01.nyt.com/images/2019/01/11/dining/jm-indonesian-chicken-soup/merlin_148333161_f25722c1-83e2-4019-942f-0ae44bfe702f-jumbo.jpg"
+            },
+            {
+                id: 6,
+                title: "Es Teh Manis",
+                category: "beverage",
+                price: 8000,
+                description: "Sweet iced tea with refreshing taste",
+                image: "https://awsimages.detik.net.id/community/media/visual/2020/05/14/0af32d8b-36b7-4555-8e79-4fd54c98f795.jpeg?w=600&q=90"
+            },
+            {
+                id: 7,
+                title: "Es Jeruk",
+                category: "beverage",
+                price: 10000,
+                description: "Fresh orange juice served chilled",
+                image: "https://d1vbn70lmn1nqe.cloudfront.net/prod/wp-content/uploads/2023/03/09062214/X-Manfaat-Es-Jeruk-dan-Resep-untuk-Membuatnya.jpg"
+            },
+            {
+                id: 8,
+                title: "Kopi Tubruk",
+                category: "beverage",
+                price: 12000,
+                description: "Traditional Indonesian coffee",
+                image: "https://dcostseafood.id/wp-content/uploads/2022/03/Kopi-Tubruk.jpg"
+            },
+            {
+                id: 9,
+                title: "Avocado Juice",
+                category: "beverage",
+                price: 15000,
+                description: "Creamy avocado blended with milk and chocolate syrup",
+                image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/022b075e-c570-45e4-b0bf-c25bb7e3c3a8.png"
+            },
+            {
+                id: 10,
+                title: "Es Campur",
+                category: "dessert",
+                price: 18000,
+                description: "Mixed ice dessert with fruits, jelly, and syrup",
+                image: "https://cdn.yummy.co.id/content-images/images/20200521/0hVDZ66FMWiT9URRDhDZN8KKbk0sh3qA-31353930303031383335d41d8cd98f00b204e9800998ecf8427e.jpg?x-oss-process=image/resize,w_388,h_388,m_fixed,x-oss-process=image/format,webp"
+            },
+            {
+                id: 11,
+                title: "Klepon",
+                category: "dessert",
+                price: 10000,
+                description: "Traditional Indonesian rice cake filled with palm sugar",
+                image: "https://www.wandercooks.com/wp-content/uploads/2025/03/klepon-recipe-ft-1.jpg"
+            },
+            {
+                id: 12,
+                title: "Pisang Goreng",
+                category: "dessert",
+                price: 12000,
+                description: "Fried banana with crispy coating",
+                image: "https://awsimages.detik.net.id/community/media/visual/2022/06/28/resep-pisang-goreng-keriting_43.jpeg?w=600&q=90"
+            }
+        ];
+
+        // DOM elements
+        const menuItemsContainer = document.getElementById('menuItems');
+        const cartItemsContainer = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartSidebar = document.querySelector('.cart-sidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartIcon = document.getElementById('cartIcon');
+        const closeCartBtn = document.getElementById('closeCart');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+        const orderForm = document.getElementById('orderForm');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+
+        // Cart state
+        let cart = [];
+
+        // --- Functions ---
+
+        /**
+         * Loads and displays menu items based on the selected category.
+         * @param {string} category - The category to filter ('all', 'food', 'beverage', 'dessert').
+         */
+        function loadMenuItems(category = 'all') {
+            menuItemsContainer.innerHTML = ''; // Clear existing items
+            const filteredItems = category === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === category);
+            
+            filteredItems.forEach(item => {
+                const menuItemElement = document.createElement('div');
+                menuItemElement.className = 'menu-item';
+                menuItemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="menu-item-img">
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <span>${item.title}</span>
+                            <span class="menu-item-price">Rp ${item.price.toLocaleString('id-ID')}</span>
+                        </div>
+                        <p class="menu-item-desc">${item.description}</p>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" data-id="${item.id}">
+                            <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        </div>
+                        <button class="add-to-cart" data-id="${item.id}">Add to Cart</button>
+                    </div>
+                `;
+                menuItemsContainer.appendChild(menuItemElement);
+            });
+
+            // Add event listeners to all newly created add to cart buttons
+            document.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', addToCart);
+            });
+
+            // Add event listeners to all newly created quantity controls for menu items
+            document.querySelectorAll('.menu-grid .quantity-btn.plus').forEach(btn => {
+                btn.addEventListener('click', (e) => updateMenuItemQuantity(e.target.dataset.id, 1));
+            });
+            document.querySelectorAll('.menu-grid .quantity-btn.minus').forEach(btn => {
+                btn.addEventListener('click', (e) => updateMenuItemQuantity(e.target.dataset.id, -1));
+            });
+            document.querySelectorAll('.menu-grid .quantity-input').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    let val = parseInt(e.target.value);
+                    if (isNaN(val) || val < 1) {
+                        e.target.value = 1;
+                    }
+                });
+            });
+        }
+
+        /**
+         * Updates the quantity input field for a menu item directly.
+         * @param {number} id - The ID of the menu item.
+         * @param {number} change - The amount to change the quantity by (+1 or -1).
+         */
+        function updateMenuItemQuantity(id, change) {
+            const quantityInput = document.querySelector(`.quantity-input[data-id="${id}"]`);
+            if (quantityInput) {
+                let quantity = parseInt(quantityInput.value);
+                quantity += change;
+                if (quantity < 1) {
+                    quantity = 1; // Minimum quantity is 1
+                }
+                quantityInput.value = quantity;
+            }
+        }
+
+
+        /**
+         * Handles adding an item to the cart.
+         * @param {Event} e - The click event object.
+         */
+        function addToCart(e) {
+            const id = parseInt(e.target.dataset.id);
+            const menuItem = menuItems.find(item => item.id === id);
+            const quantityInput = document.querySelector(`.quantity-input[data-id="${id}"]`);
+            const quantity = parseInt(quantityInput.value);
+            
+            // Check if item already exists in cart
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({
+                    id: menuItem.id,
+                    title: menuItem.title,
+                    price: menuItem.price,
+                    image: menuItem.image,
+                    quantity: quantity
+                });
+            }
+            
+            updateCartDisplay();
+            quantityInput.value = 1; // Reset quantity input after adding to cart
+            toggleCart(true); // Open cart sidebar when item is added
+        }
+
+        /**
+         * Increases the quantity of an item in the cart.
+         * @param {number} id - The ID of the item to increase.
+         */
+        function increaseQuantity(id) {
+            const itemInCart = cart.find(item => item.id === id);
+            if (itemInCart) {
+                itemInCart.quantity++;
+                updateCartDisplay();
+            }
+        }
+
+        /**
+         * Decreases the quantity of an item in the cart.
+         * @param {number} id - The ID of the item to decrease.
+         */
+        function decreaseQuantity(id) {
+            const itemInCart = cart.find(item => item.id === id);
+            if (itemInCart) {
+                if (itemInCart.quantity > 1) {
+                    itemInCart.quantity--;
+                } else {
+                    // Remove item if quantity becomes 0 or less
+                    cart = cart.filter(item => item.id !== id);
+                }
+                updateCartDisplay();
+            }
+        }
+
+        /**
+         * Removes an item from the cart completely.
+         * @param {Event} e - The click event object.
+         */
+        function removeFromCart(e) {
+            const id = parseInt(e.currentTarget.dataset.id);
+            cart = cart.filter(item => item.id !== id);
+            updateCartDisplay();
+        }
+
+        /**
+         * Updates the cart display in the sidebar.
+         */
+        function updateCartDisplay() {
+            cartItemsContainer.innerHTML = ''; // Clear existing cart items
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="text-align: center; color: #777;">Your cart is empty</p>';
+                orderForm.style.display = 'none'; // Hide form if cart is empty
+                checkoutBtn.style.display = 'block'; // Show checkout button
+            } else {
+                cart.forEach(item => {
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.className = 'cart-item';
+                    cartItemElement.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" class="cart-item-img">
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                        </div>
+                        <div class="cart-item-quantity-controls">
+                            <button class="cart-quantity-btn minus" data-id="${item.id}">-</button>
+                            <span class="cart-quantity-display">${item.quantity}</span>
+                            <button class="cart-quantity-btn plus" data-id="${item.id}">+</button>
+                            <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItemElement);
+                });
+
+                // Add event listeners for quantity changes in cart
+                document.querySelectorAll('.cart-item-quantity-controls .minus').forEach(btn => {
+                    btn.addEventListener('click', (e) => decreaseQuantity(parseInt(e.target.dataset.id)));
+                });
+                document.querySelectorAll('.cart-item-quantity-controls .plus').forEach(btn => {
+                    btn.addEventListener('click', (e) => increaseQuantity(parseInt(e.target.dataset.id)));
+                });
+                // Add event listeners to remove buttons for items in cart
+                document.querySelectorAll('.remove-item').forEach(btn => {
+                    btn.addEventListener('click', removeFromCart);
+                });
+            }
+            
+            // Update cart count and total price
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+        }
+
+        /**
+         * Toggles the visibility of the cart sidebar and overlay.
+         * @param {boolean} [forceOpen] - If true, forces the cart to open.
+         */
+        function toggleCart(forceOpen = false) {
+            if (forceOpen) {
+                cartOverlay.classList.add('active');
+                cartSidebar.classList.add('active');
+            } else {
+                cartOverlay.classList.toggle('active');
+                cartSidebar.classList.toggle('active');
+                // Hide order form when cart is closed
+                if (!cartSidebar.classList.contains('active')) {
+                    orderForm.style.display = 'none';
+                    checkoutBtn.style.display = 'block';
+                }
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Load menu items on initial page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenuItems();
+            updateCartDisplay(); // Initialize cart display
+        });
+
+        // Toggle cart sidebar
+        cartIcon.addEventListener('click', () => toggleCart(true));
+        closeCartBtn.addEventListener('click', () => toggleCart(false));
+        cartOverlay.addEventListener('click', () => toggleCart(false));
+
+        // Category filter buttons
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                loadMenuItems(e.target.dataset.category);
+            });
+        });
+
+        // Toggle order form visibility
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length > 0) {
+                orderForm.style.display = 'block';
+                checkoutBtn.style.display = 'none'; // Hide checkout button when form is shown
+            } else {
+                alert("Your cart is empty. Please add items before checking out.");
+            }
+        });
+
+        // Handle order confirmation and WhatsApp link
+        confirmOrderBtn.addEventListener('click', () => {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const deliveryDate = document.getElementById('deliveryDate').value;
+            const deliveryTime = document.getElementById('deliveryTime').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+            if (!customerName || !customerPhone || !customerAddress || !deliveryDate || !deliveryTime) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            let orderDetails = `Halo CiciFood!\n\nSaya ingin memesan:\n\n`;
+            cart.forEach(item => {
+                orderDetails += `${item.quantity}x ${item.title} (Rp ${item.price.toLocaleString('id-ID')})\n`;
+            });
+            orderDetails += `\nTotal: Rp ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toLocaleString('id-ID')}\n\n`;
+            orderDetails += `Detail Pengiriman:\n`;
+            orderDetails += `Nama: ${customerName}\n`;
+            orderDetails += `No. Telepon: ${customerPhone}\n`;
+            orderDetails += `Alamat: ${customerAddress}\n`;
+            orderDetails += `Tanggal Pengiriman: ${deliveryDate}\n`;
+            orderDetails += `Waktu Pengiriman: ${deliveryTime}\n`;
+            orderDetails += `Metode Pembayaran: ${paymentMethod}\n\n`;
+            orderDetails += `Terima kasih!`;
+
+            const whatsappNumber = "6281234567890"; // Ganti dengan nomor WhatsApp Anda
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderDetails)}`;
+            window.open(whatsappUrl, '_blank');
+
+            // Clear cart and form after sending order
+            cart = [];
+            updateCartDisplay();
+            orderForm.reset();
+            orderForm.style.display = 'none';
+            checkoutBtn.style.display = 'block';
+            toggleCart(false); // Close cart sidebar
+            alert("Your order has been sent via WhatsApp!");
+        });
+    </script>
+</body>
+</html>
