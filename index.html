@@ -649,12 +649,13 @@
         }
 
         /* ==========================================================================
-           Order Form
-           ========================================================================== */
+   Order Form
+   ========================================================================== */
         .order-form {
             display: none;
             margin-top: 2.5rem;
             padding: 2.5rem;
+            /* Default padding for larger screens */
             background: white;
             border-radius: var(--border-radius-md);
             box-shadow: 0 8px 25px var(--shadow-light);
@@ -665,6 +666,7 @@
             text-align: center;
             color: var(--dark);
             font-size: 2rem;
+            /* Default font size */
         }
 
         .form-group {
@@ -698,10 +700,12 @@
         .form-row {
             display: flex;
             gap: 1.5rem;
+            align-items: flex-start; /* Menyelaraskan item ke bagian atas */
         }
 
         .form-row .form-group {
             flex: 1;
+            margin-bottom: 0; /* Menghapus margin bawah saat dalam satu baris */
         }
 
         .payment-methods {
@@ -746,6 +750,153 @@
             color: var(--text-color);
             margin-bottom: 0;
         }
+
+        /* Responsive Styles for Order Form */
+        @media (max-width: 768px) {
+            .order-form {
+                padding: 1.5rem;
+                /* Reduced padding for tablets/smaller screens */
+            }
+
+            .order-form h4 {
+                font-size: 1.8rem;
+                /* Slightly smaller font for title */
+                margin-bottom: 1.5rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.2rem;
+                /* Reduced margin between form groups */
+            }
+
+            .form-group label {
+                font-size: 0.95rem;
+                /* Slightly smaller label font */
+                margin-bottom: 0.6rem;
+            }
+
+            .form-control {
+                padding: 0.8rem;
+                /* Reduced padding for inputs */
+                font-size: 1rem;
+                /* Smaller input font */
+            }
+
+            .form-row {
+                flex-direction: column;
+                /* Stack date and time inputs vertically */
+                gap: 0;
+                /* Remove gap when stacked */
+            }
+
+            .form-row .form-group {
+                margin-bottom: 1.2rem;
+                /* Add margin between stacked date/time inputs */
+            }
+
+            .payment-methods {
+                margin: 1.5rem 0;
+                padding-top: 1rem;
+            }
+
+            .payment-methods h5 {
+                font-size: 1.3rem;
+                /* Smaller payment method title */
+                margin-bottom: 1rem;
+            }
+
+            .payment-method {
+                padding: 0.6rem;
+                /* Reduced padding for payment methods */
+                margin-bottom: 1rem;
+            }
+
+            .payment-method label {
+                font-size: 1rem;
+                /* Smaller payment method label font */
+            }
+
+            .btn {
+                /* Applies to confirmOrderBtn */
+                padding: 1rem 1.5rem;
+                /* Adjust button padding */
+                font-size: 1.1rem;
+                /* Adjust button font size */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .order-form {
+                padding: 1rem;
+                /* Even smaller padding for mobile */
+            }
+
+            .order-form h4 {
+                font-size: 1.5rem;
+                /* Smaller title for mobile */
+                margin-bottom: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+                /* Smaller margin between form groups */
+            }
+
+            .form-group label {
+                font-size: 0.9rem;
+                /* Smaller label font for mobile */
+                margin-bottom: 0.5rem;
+            }
+
+            .form-control {
+                padding: 0.7rem;
+                /* Even smaller padding for inputs */
+                font-size: 0.95rem;
+                /* Even smaller input font */
+            }
+
+            .form-row .form-group {
+                margin-bottom: 1rem;
+                /* Consistent margin for stacked inputs */
+            }
+
+            .payment-methods {
+                margin: 1rem 0;
+                padding-top: 0.8rem;
+            }
+
+            .payment-methods h5 {
+                font-size: 1.1rem;
+                /* Smallest payment method title */
+                margin-bottom: 0.8rem;
+            }
+
+            .payment-method {
+                padding: 0.5rem;
+                /* Smallest padding for payment methods */
+                margin-bottom: 0.8rem;
+            }
+
+            .payment-method input[type="radio"] {
+                transform: scale(1.1);
+                /* Slightly smaller radio button */
+                margin-right: 0.8rem;
+            }
+
+            .payment-method label {
+                font-size: 0.95rem;
+                /* Smallest payment method label font */
+            }
+
+            .btn {
+                /* Applies to confirmOrderBtn */
+                padding: 0.8rem 1.2rem;
+                /* Smallest button padding */
+                font-size: 1rem;
+                /* Smallest button font size */
+            }
+        }
+
 
         /* ==========================================================================
            Cart Overlay
@@ -1126,7 +1277,8 @@
             }
 
             .form-row .form-group {
-                margin-bottom: 1.5rem;
+                margin-bottom: 1.2rem;
+                /* Add margin between stacked date/time inputs */
             }
 
             .order-form h4 {
@@ -1339,12 +1491,12 @@
     <div class="initial-popup-overlay" id="initialPopupOverlay">
         <div class="initial-popup">
             <!-- Ganti URL gambar lokal ini dengan URL yang dapat diakses publik -->
-            <img class="img-bottom-left pulse-red" src="c:\Users\PC\Documents\Punyaku\cici jpg\BEER.png"
-                alt="Beer Mug Clipart" loading="lazy">
-            <img class="img-top-center pulse-red" src="c:\Users\PC\Documents\Punyaku\cici jpg\Cici-Food-7-29-2025.png"
-                alt="Cici Food Logo" loading="lazy">
-            <img class="img-middle-right pulse-red" src="c:\Users\PC\Documents\Punyaku\cici jpg\hamburger.png"
-                alt="Food Clipart" loading="lazy">
+            <img class="img-bottom-left pulse-red" src="https://i.imgur.com/ULjL5Qt.png" alt="Beer Mug Clipart"
+                loading="lazy">
+            <img class="img-top-center pulse-red" src="https://i.imgur.com/H3hqONU.png" alt="Cici Food Logo"
+                loading="lazy">
+            <img class="img-middle-right pulse-red" src="https://i.imgur.com/qFE2J7i.png" alt="Food Clipart"
+                loading="lazy">
             <img src="https://media.tenor.com/7qFULBHgzlYAAAAj/bubu-cooking-dudu-bubu.gif" alt="Cooking Animation"
                 loading="lazy">
         </div>
@@ -1372,7 +1524,7 @@
     <main>
         <section class="hero" id="home">
             <div class="hero-content">
-                <h1>Cici Food Delivered to Your Doorstep</h1>
+                <h1>Cici Food Delivered</h1>
                 <p>Experience authentic Indonesian flavors from our kitchen, delivered fresh and hot to the comfort of
                     your
                     home.</p>
@@ -1467,25 +1619,25 @@
             <h4>Complete Your Order</h4>
             <div class="form-group">
                 <label for="customerName">Full Name</label>
-                <input type="text" id="customerName" class="form-control" required placeholder="Enter your full name">
+                <input type="text" id="customerName" class="form-control" required placeholder="Silahkan isi Nama lengkap Anda">
             </div>
             <div class="form-group">
                 <label for="customerPhone">Phone Number</label>
-                <input type="tel" id="customerPhone" class="form-control" required placeholder="e.g., 08123456789">
+                <input type="tel" id="customerPhone" class="form-control" required placeholder="Contoh:08123456789">
             </div>
             <div class="form-group">
                 <label for="customerAddress">Delivery Address & Additional Message</label>
                 <textarea id="customerAddress" class="form-control" rows="3" required
-                    placeholder="Enter your delivery address and any additional messages"></textarea>
+                    placeholder="Enter your delivery address and additional messages"></textarea>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="deliveryDate">Delivery Date</label>
-                    <input type="date" id="deliveryDate" class="form-control" required>
+                    <input type="date" id="deliveryDate" class="form-control" required readonly>
                 </div>
                 <div class="form-group">
                     <label for="deliveryTime">Delivery Time</label>
-                    <input type="time" id="deliveryTime" class="form-control" required>
+                    <input type="time" id="deliveryTime" class="form-control" required readonly>
                 </div>
             </div>
             <div class="payment-methods">
@@ -1628,6 +1780,8 @@
         const orderForm = document.getElementById('orderForm');
         const categoryBtns = document.querySelectorAll('.category-btn');
         const initialPopupOverlay = document.getElementById('initialPopupOverlay');
+        const deliveryTimeInput = document.getElementById('deliveryTime'); // Ambil elemen input deliveryTime
+        const deliveryDateInput = document.getElementById('deliveryDate'); // Ambil elemen input deliveryDate
 
         // Cart state
         let cart = [];
@@ -1886,7 +2040,36 @@
         // Checkout button click handler
         checkoutBtn.addEventListener('click', () => {
             if (cart.length === 0) {
-                alert('Your cart is empty. Please add items to proceed to checkout.');
+                // Mengganti alert() dengan pesan di dalam UI
+                const messageBox = document.createElement('div');
+                messageBox.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                    z-index: 1001;
+                    text-align: center;
+                    font-family: 'Open Sans', sans-serif;
+                    color: var(--dark);
+                `;
+                messageBox.innerHTML = `
+                    <p style="margin-bottom: 15px; font-size: 1.1rem;">Your cart is empty. Please add items to proceed to checkout.</p>
+                    <button style="
+                        background-color: var(--primary);
+                        color: white;
+                        padding: 8px 15px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                        transition: background-color 0.2s;
+                    " onclick="this.parentNode.remove()">OK</button>
+                `;
+                document.body.appendChild(messageBox);
                 return;
             }
             orderForm.style.display = 'block'; // Show the order form
@@ -1905,7 +2088,36 @@
             const deliveryTime = document.getElementById('deliveryTime').value;
 
             if (!customerName || !customerPhone || !customerAddress || !deliveryDate || !deliveryTime) {
-                alert('Please complete all delivery details.');
+                // Mengganti alert() dengan pesan di dalam UI
+                const messageBox = document.createElement('div');
+                messageBox.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                    z-index: 1001;
+                    text-align: center;
+                    font-family: 'Open Sans', sans-serif;
+                    color: var(--dark);
+                `;
+                messageBox.innerHTML = `
+                    <p style="margin-bottom: 15px; font-size: 1.1rem;">Please complete all delivery details.</p>
+                    <button style="
+                        background-color: var(--primary);
+                        color: white;
+                        padding: 8px 15px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                        transition: background-color 0.2s;
+                    " onclick="this.parentNode.remove()">OK</button>
+                `;
+                document.body.appendChild(messageBox);
                 return;
             }
 
@@ -1916,14 +2128,43 @@
             cart = [];
             updateCartDisplay();
             toggleCart(false);
-            alert('Your order has been sent via WhatsApp! Thank you.');
+
+            // Mengganti alert() dengan pesan di dalam UI
+            const messageBox = document.createElement('div');
+            messageBox.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                z-index: 1001;
+                text-align: center;
+                font-family: 'Open Sans', sans-serif;
+                color: var(--dark);
+            `;
+            messageBox.innerHTML = `
+                <p style="margin-bottom: 15px; font-size: 1.1rem;">Your order has been sent via WhatsApp! Thank you.</p>
+                <button style="
+                    background-color: var(--primary);
+                    color: white;
+                    padding: 8px 15px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                    transition: background-color 0.2s;
+                " onclick="this.parentNode.remove()">OK</button>
+            `;
+            document.body.appendChild(messageBox);
 
             // Clear form fields after successful order
             document.getElementById('customerName').value = '';
             document.getElementById('customerPhone').value = '';
             document.getElementById('customerAddress').value = '';
-            document.getElementById('deliveryDate').value = '';
-            document.getElementById('deliveryTime').value = '';
+            // deliveryDate dan deliveryTime akan diupdate secara otomatis
             document.getElementById('bankTransfer').checked = true; // Reset payment method to default
         });
 
@@ -1954,6 +2195,32 @@
 
             loadMenuItems(); // Load menu items when the DOM is ready
             updateCartDisplay(); // Update cart display when the DOM is ready
+
+            // MODIFIKASI BARU: Fungsi untuk memperbarui waktu secara real-time
+            function updateRealtimeDeliveryTime() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                deliveryTimeInput.value = `${hours}:${minutes}`;
+            }
+
+            // MODIFIKASI BARU: Fungsi untuk memperbarui tanggal secara real-time
+            function updateRealtimeDeliveryDate() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                const day = String(now.getDate()).padStart(2, '0');
+                deliveryDateInput.value = `${year}-${month}-${day}`;
+            }
+
+            // Panggil fungsi saat halaman dimuat
+            updateRealtimeDeliveryTime();
+            updateRealtimeDeliveryDate();
+
+            // Perbarui setiap detik (1000 ms)
+            setInterval(updateRealtimeDeliveryTime, 1000);
+            // Perbarui tanggal setiap menit (opsional, atau biarkan hanya saat dimuat jika tidak perlu update real-time yang ketat)
+            setInterval(updateRealtimeDeliveryDate, 60000); // Update setiap menit
         });
     </script>
 </body>
